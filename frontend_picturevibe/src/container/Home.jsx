@@ -20,21 +20,19 @@ const Home = () => {
   const userInfo = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
 
   useEffect(() => {
-    console.log("User Info : ", userInfo);
     const query = userQuery(userInfo?._id);
 
     client.fetch(query).then((data) => {
-      console.log("Data : ", data);
       setUser(data[0]);
     });
     setLoading(false);
-  }, []);
+  }, [userInfo]);
 
   useEffect(() => {
     if (!loading) {
       scrollRef.current.scrollTo(0, 0);
     }
-  }, []);
+  }, [loading]);
 
   if (loading) {
     return (

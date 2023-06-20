@@ -15,13 +15,29 @@ const PinDetail = ({ user }) => {
   const [comment, setComment] = useState('');
   const [addingComment, setAddingComment] = useState(false);
 
+  const addComment = () => {
+    if (comment) {
+      setAddingComment(true);
+
+      client
+        .patch(pinId)
+        .setIfMissing({ comments: [] })
+        .append('comments', [{ comment, _key: uuidv4(), postedBy: { _type: 'postedBy', _ref: user._id } }])
+        .commit()
+        .then(() => {
+          fetchPinDetails();
+          setComment('');
+          setAddingComment(false);
+        });
+    }
+  };
+
   const fetchPinDetails = () => {
     const query = pinDetailQuery(pinId);
 
     if (query) {
       client.fetch(`${query}`).then((data) => {
         setPinDetail(data[0]);
-        console.log(data);
         if (data[0]) {
           const query1 = pinDetailMorePinQuery(data[0]);
           client.fetch(query1).then((res) => {
@@ -34,24 +50,8 @@ const PinDetail = ({ user }) => {
 
   useEffect(() => {
     fetchPinDetails();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pinId]);
-
-  const addComment = () => {
-    if (comment) {
-      setAddingComment(true);
-
-      client
-        .patch(pinId)
-        .setIfMissing({ comments: [] })
-        .insert('after', 'comments[-1]', [{ comment, _key: uuidv4(), postedBy: { _type: 'postedBy', _ref: user._id } }])
-        .commit()
-        .then(() => {
-          fetchPinDetails();
-          setComment('');
-          setAddingComment(false);
-        });
-    }
-  };
 
   if (!pinDetail) {
     return (
@@ -127,7 +127,7 @@ const PinDetail = ({ user }) => {
                 className="bg-red-500 text-white rounded-full px-6 py-2 font-semibold text-base outline-none"
                 onClick={addComment}
               >
-                {addingComment ? 'Doing...' : 'Done'}
+                {addingComment ? 'Posting...' : 'Done'}
               </button>
             </div>
           </div>
