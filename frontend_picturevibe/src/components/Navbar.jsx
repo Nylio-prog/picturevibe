@@ -4,7 +4,14 @@ import { IoMdSearch } from 'react-icons/io';
 import { RiImageAddFill } from 'react-icons/ri';
 
 const Navbar = ({ searchTerm, setSearchTerm, user }) => {
+  
   const navigate = useNavigate();
+
+  const handleKeyDown = (e) => {
+    if (e.code === 'Enter') {
+      navigate('/search');
+    };
+  };
 
   if (user) {
     return (
@@ -13,10 +20,10 @@ const Navbar = ({ searchTerm, setSearchTerm, user }) => {
           <IoMdSearch fontSize={21} className="ml-1" />
           <input
             type="text"
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {setSearchTerm(e.target.value)}}
             placeholder="Search"
             value={searchTerm}
-            onFocus={() => navigate('/search')}
+            onKeyDown={handleKeyDown}
             className="p-2 w-full bg-white outline-none"
           />
         </div>
