@@ -10,6 +10,7 @@ const Search = ({ searchTerm }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log(searchTerm);
     if (searchTerm !== '') {
       setLoading(true);
       const query = searchQuery(searchTerm.toLowerCase());
@@ -27,7 +28,6 @@ const Search = ({ searchTerm }) => {
 
   return (
     <div>
-
       {loading && <Spinner message="Searching pins" />}
       {pins?.length !== 0 && <MasonryLayout pins={pins} />}
       {pins?.length === 0 && searchTerm !== '' && !loading && (
