@@ -6,12 +6,15 @@ import { Link, Route, Routes } from 'react-router-dom';
 import { Sidebar, UserProfile } from '../components';
 import { userQuery } from '../utils/data';
 import { client } from '../client';
+import Spinner from '../components/Spinner';
 import Pins from './Pins';
 import logo from '../assets/logo.png';
 
 const Home = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const scrollRef = useRef(null);
 
   const userInfo = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
@@ -22,11 +25,20 @@ const Home = () => {
     client.fetch(query).then((data) => {
       setUser(data[0]);
     });
-  }, []);
+    setLoading(false);
+  }, [userInfo]);
 
   useEffect(() => {
-    scrollRef.current.scrollTo(0, 0);
-  });
+    if (!loading) {
+      scrollRef.current.scrollTo(0, 0);
+    }
+  }, [loading]);
+
+  if (loading) {
+    return (
+      <Spinner message="Loading" />
+    );
+  }
 
   return (
     <div className="flex bg-gray-50 md:flex-row flex-col h-screen transition-height duration-75 ease-out">
