@@ -35,8 +35,8 @@ export const categories = [
     image: 'https://i.pinimg.com/236x/fa/95/98/fa95986f2c408098531ca7cc78aee3a4.jpg',
   },
   {
-    name: 'quotes',
-    image: 'https://i.pinimg.com/236x/46/7c/17/467c17277badb00b638f8ec4da89a358.jpg',
+    name: 'tennis',
+    image: 'https://i.pinimg.com/564x/df/f5/ea/dff5ea25d9cfdc152002be0a5eceec77.jpg',
   }, {
     name: 'cats',
     image: 'https://i.pinimg.com/236x/6c/3c/52/6c3c529e8dadc7cffc4fddedd4caabe1.jpg',
